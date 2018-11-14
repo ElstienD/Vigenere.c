@@ -1,0 +1,79 @@
+// encrypt a message by deviating each charachter's ascii value by a user-defined integer they create with their own keyword
+
+#include <stdio.h>
+#include <cs50.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+int main(int argc, string argv[])
+{
+
+// check for segmentation fault
+
+    if (argc != 2)
+    {
+        printf("Please try again with a different key\n");
+        return (1);
+    }
+
+
+
+// check that the user gave a valid CLA
+
+    for (int i = 0; i < strlen(argv[1]); i++)
+    {
+        if (isalpha(argv[1][i]) == 0)
+        {
+            printf("Please try again with a different key\n");
+            return (1);
+        }
+    }
+
+// initialize variables
+
+    string key = argv[1];
+    string plaintext;
+    int y = 0;
+
+// Get the plaintext from the user
+
+    printf("What message do you want to encrypt?\n");
+    plaintext = get_string();
+
+// calculate each charachter's change individually using a for loop, if char is not a letter: print it normally
+
+    printf("ciphertext: ");
+    for (int x = 0; x < strlen(plaintext); x++)
+    {
+        y %= strlen(key);
+        if (islower(plaintext[x]) && islower(key[y]))
+        {
+            printf("%c", (((plaintext[x] + key[y]) % 97) % 26) + 97);
+            y++;
+        }
+        if (isupper(plaintext[x]) && islower(key[y]))
+        {
+            printf("%c", (((plaintext[x] + toupper(key[y])) % 65) % 26) + 65);
+            y++;
+        }
+        if (islower(plaintext[x]) && isupper(key[y]))
+        {
+            printf("%c", (((plaintext[x] + tolower(key[y])) % 97) % 26) + 97);
+            y++;
+        }
+        if (isupper(plaintext[x]) && isupper(key[y]))
+        {
+            printf("%c", (((plaintext[x] + key[y]) % 65) % 26) + 65);
+            y++;
+        }
+        if (!isalpha(plaintext[x]))
+        {
+            printf("%c", plaintext[x]);
+        }
+    }
+    printf("\n");
+    return (0);
+}
+
+
